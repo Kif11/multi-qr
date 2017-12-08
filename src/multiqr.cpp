@@ -18,25 +18,37 @@ using namespace std;
 using namespace qrcodegen;
 using namespace zbar;
 
-struct QrChunk {
-  string header;
-  string data;
-};
-
-class QrHeader {
-  const int m_size = 5;
-  string m_data;
-  string m_data64;
+/*
+ * Chunk of file data with costom header to be encoded to QR code
+ */
+class QrChunk {
+  const int m_raw_header_size = 5;
+  const int m_header_size = 8;
+  string m_header; // in base64 format
+  string m_body; // in base64 format
 
   public:
-    QrHeader(int index, int total) {
-      char header[m_size];
-      m_data = snprintf(header, sizeof(header), "%02d%02d", index, total);
-      m_data64 = base64_encode((unsigned char*)header, m_size);
+    // Deffault constructor
+    QrChunk() {}
+
+    QrChunk(string data) {
+      m_header = data.substr(0, m_header_size);
+      m_body = data.substr(m_header_size, data.size() - m_header_size);
     }
 
-    string getData() { return m_data; }
-    string getData64() { return m_data64; }
+    string getHeader() { return m_header; }
+  
+    string getBody() { return m_body; }
+  
+    string getData() { return m_header + m_body; }
+  
+    void setBody(string data) { m_body = data; }
+  
+    void setHeader(int index, int total) {
+      char header[m_raw_header_size];
+      snprintf(header, sizeof(header), "%02d%02d", index, total);
+      m_header = base64_encode((unsigned char*)header, m_raw_header_size);
+    }
 };
 
 /*
@@ -48,8 +60,7 @@ class QrEncoder {
   int m_out_qr_scale = 4;
 
   vector<QrCode> m_qrs;
-  vector<string> m_chunks64;
-  vector<string> m_chunks64_with_headers;  
+  vector<QrChunk> m_chunks;
 
   void split_to_chunks(int chunk_size=738) {
 
@@ -62,7 +73,12 @@ class QrEncoder {
       if (start + chunk_size > data64.size()) {
         chunk_size = data64.size() - (start-1);
       }
-      m_chunks64.push_back(data64.substr(start, chunk_size));
+
+      QrChunk chunk;
+      chunk.setBody(data64.substr(start, chunk_size));
+      chunk.setHeader(i, num_chunks);
+
+      m_chunks.push_back(chunk);
     }
   }
 
@@ -86,29 +102,12 @@ class QrEncoder {
       return 0;
     }
 
-    string get_data64() {
-      return base64_encode((unsigned char*)m_data.c_str(), m_data.size());
-    }
-
-    void add_chunks_header () {
-      int i;
-      for (string chunk64 : m_chunks64) {
-        // cout << chunk << endl;
-        string header64 = QrHeader(i, m_chunks64.size()).getData64();
-        m_chunks64_with_headers.push_back(header64 + chunk64);
-        i++;
-      }
-    }
-
     int encode (int chunk_size) {
       
       split_to_chunks();
-      add_chunks_header();
 
-      cout << "Total chunks: " << m_chunks64.size() << endl;
-      for (string chunk64 : m_chunks64_with_headers) {
-        // cout << chunk << endl;
-        QrCode qr = QrCode::encodeText(chunk64.c_str(), QrCode::Ecc::LOW);
+      for (QrChunk chunk : m_chunks) {
+        QrCode qr = QrCode::encodeText(chunk.getData().c_str(), QrCode::Ecc::LOW);
         m_qrs.push_back(qr);
       }
       return 0;
@@ -225,23 +224,16 @@ class QrDecoder {
           data = data + symbol->get_data();          
         }
 
-        QrChunk chunk;
-        chunk.header = data.substr(0, 8);
-        chunk.data = data.substr(8, data.size()-8);
-
+        QrChunk chunk(data);
         m_chunks.push_back(chunk);
       }
-    }
-
-    void strip_headers() {
-
     }
 
     string get_data() {
       string data;
       for (QrChunk chunk : m_chunks) {
-        cout <<  base64_decode(chunk.header) << endl;
-        data += chunk.data;
+        cout <<  base64_decode(chunk.getHeader()) << endl;
+        data += chunk.getBody();
       }
       return base64_decode(data);
     }
