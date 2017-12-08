@@ -1,0 +1,6 @@
+.DS_Store
+.vscode
+*.dSYM
+out/
+qr_pngs/
+qr_svgs/
