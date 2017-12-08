@@ -150,14 +150,16 @@ class QrDecoder {
   int m_num_files = 16;
   string m_input_folder;
   string m_data64;
-  vector<cv::Mat> images;
-  
+
+  vector<cv::Mat> m_images;
+  vector<string> m_chunks;
+
   public:
 
     void read_images(string dir_path) {
       for (int i = 0; i < m_num_files; i++) {
         cv::Mat img = cv::imread(dir_path + "/" + to_string(i) + ".png");
-        images.push_back(img);
+        m_images.push_back(img);
       }
     }
 
@@ -169,20 +171,17 @@ class QrDecoder {
 
       int total;
 
-      for (auto img : images) {
+      for (auto img : m_images) {
         cv::Mat img_gray, img_resized;
 
         // Convert to grayscale
         cvtColor(img, img_gray, CV_RGBA2GRAY);
-        cv::resize(img_gray, img_resized, cv::Size(), 0.5, 0.5, cv::INTER_LINEAR );
 
         int width = img_gray.cols;
         int height = img_gray.rows;
 
+        // Prep data for qr image decoder
         uchar *raw = (uchar *)(img_gray.data);
-
-        // cv::imshow("test", img_gray);
-        // cv::waitKey(0);
 
         Image image(width, height, "Y800", raw, width * height);
 
@@ -195,28 +194,31 @@ class QrDecoder {
           cv::waitKey(0);
         }
 
-        string raw_qr_data;
-
+        string chunk;
         for (auto symbol = image.symbol_begin(); symbol != image.symbol_end(); ++symbol) {
-          raw_qr_data = raw_qr_data + symbol->get_data();          
+          chunk = chunk + symbol->get_data();          
         }
-
-        total += raw_qr_data.size();
-
-        m_data64 = m_data64 + raw_qr_data;
-        
-        raw_qr_data = "";
+        m_chunks.push_back(chunk);
       }
     }
 
+    string get_data() {
+      string data;
+      for (string chunk : m_chunks) {
+        data += chunk;
+      }
+      return base64_decode(data);
+    }
+
     int save_file(string file_name) {
+      string data = get_data();
+
       ofstream outputFile(file_name);
       if (! outputFile.is_open()) {
         cout << "Can not write to " << file_name << endl;
         return -1;
       }
-      cout << "Data size: " << m_data64.size() << endl;
-      outputFile << base64_decode(m_data64);
+      outputFile << data;
       outputFile.close();
       return 0;
     }
