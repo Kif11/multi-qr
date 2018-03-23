@@ -3,3 +3,10 @@ CXXFLAGS = -g -O1 -std=c++11 `pkg-config --cflags --libs /usr/local/Cellar/openc
 
 main:
 	$(CXX) $(CXXFLAGS) -o bin/multiqr src/multiqr.cpp include/Base64.cpp include/qrgen/BitBuffer.cpp include/qrgen/QrCode.cpp include/qrgen/QrSegment.cpp
+
+tile:
+	$(CXX) $(CXXFLAGS) -o bin/tile src/tile.cpp
+
+install:
+	install ./bin/multiqr /usr/local/bin
+	install ./bin/tile /usr/local/bin

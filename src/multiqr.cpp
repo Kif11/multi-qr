@@ -2,7 +2,6 @@
 #include <dirent.h>
 #include <string>
 #include <vector>
-#include <iostream>
 #include <fstream>
 #include <zbar.h>
 
@@ -62,6 +61,10 @@ class QrEncoder {
   vector<QrCode> m_qrs;
   vector<QrChunk> m_chunks;
 
+  string get_data64() {
+    return base64_encode((unsigned char*)m_data.c_str(), m_data.size());
+  }
+
   void split_to_chunks(int chunk_size=738) {
 
     string data64 = get_data64();
@@ -69,7 +72,7 @@ class QrEncoder {
     int num_chunks = ceil(data64.size() / (double)chunk_size);
 
     for (int i = 0; i < num_chunks; i++) {
-      int start = ((i + 1) * chunk_size) - chunk_size;
+      int start = i * chunk_size;
       if (start + chunk_size > data64.size()) {
         chunk_size = data64.size() - (start-1);
       }
@@ -138,7 +141,6 @@ class QrEncoder {
     void save_as_imgs(string output_dir, string image_format="png") {
       int index = 0;
       for (auto qr: m_qrs) {
-        cout << index << endl;
         int qr_size = qr.getSize();
 
         cv::Mat qr_img = qr_to_img(qr);
@@ -149,7 +151,7 @@ class QrEncoder {
         cv::copyMakeBorder(qr_img, qr_img_bordered, m_border_scale, m_border_scale, m_border_scale, m_border_scale, cv::BORDER_CONSTANT, 255);
 
         // Scale image 5 times
-        cv::resize(qr_img_bordered, qr_img_resized, cv::Size(), m_out_qr_scale, m_out_qr_scale, cv::INTER_NEAREST);
+        cv::resize(qr_img_bordered, qr_img_resized, cv::Size(400, 400), 0, 0, cv::INTER_NEAREST);
 
         cv::imwrite(output_dir + "/" + to_string(index) + "." + image_format, qr_img_resized);
         index++;

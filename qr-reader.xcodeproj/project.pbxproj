@@ -1,0 +1,166 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXFileReference section */
+		1FE82A101FE0651B00A2A8E2 /* .DS_Store */ = {isa = PBXFileReference; lastKnownFileType = file; path = .DS_Store; sourceTree = "<group>"; };
+		1FE82A111FE0651B00A2A8E2 /* .git */ = {isa = PBXFileReference; lastKnownFileType = folder; path = .git; sourceTree = "<group>"; };
+		1FE82A121FE0651B00A2A8E2 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		1FE82A131FE0651B00A2A8E2 /* .vscode */ = {isa = PBXFileReference; lastKnownFileType = folder; path = .vscode; sourceTree = "<group>"; };
+		1FE82A141FE0651B00A2A8E2 /* bin */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bin; sourceTree = "<group>"; };
+		1FE82A151FE0651B00A2A8E2 /* combine.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = combine.sh; sourceTree = "<group>"; };
+		1FE82A161FE0651B00A2A8E2 /* include */ = {isa = PBXFileReference; lastKnownFileType = folder; path = include; sourceTree = "<group>"; };
+		1FE82A171FE0651B00A2A8E2 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		1FE82A181FE0651B00A2A8E2 /* out */ = {isa = PBXFileReference; lastKnownFileType = folder; path = out; sourceTree = "<group>"; };
+		1FE82A191FE0651B00A2A8E2 /* print */ = {isa = PBXFileReference; lastKnownFileType = folder; path = print; sourceTree = "<group>"; };
+		1FE82A1A1FE0651B00A2A8E2 /* qr_pngs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = qr_pngs; sourceTree = "<group>"; };
+		1FE82A1B1FE0651B00A2A8E2 /* qr_svgs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = qr_svgs; sourceTree = "<group>"; };
+		1FE82A1C1FE0651B00A2A8E2 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		1FE82A1D1FE0651B00A2A8E2 /* samples */ = {isa = PBXFileReference; lastKnownFileType = folder; path = samples; sourceTree = "<group>"; };
+		1FE82A1E1FE0651B00A2A8E2 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; path = src; sourceTree = "<group>"; };
+		1FE82A1F1FE0651B00A2A8E2 /* tmp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tmp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		1FE82A0A1FE0651B00A2A8E2 = {
+			isa = PBXGroup;
+			children = (
+				1FE82A101FE0651B00A2A8E2 /* .DS_Store */,
+				1FE82A111FE0651B00A2A8E2 /* .git */,
+				1FE82A121FE0651B00A2A8E2 /* .gitignore */,
+				1FE82A131FE0651B00A2A8E2 /* .vscode */,
+				1FE82A141FE0651B00A2A8E2 /* bin */,
+				1FE82A151FE0651B00A2A8E2 /* combine.sh */,
+				1FE82A161FE0651B00A2A8E2 /* include */,
+				1FE82A171FE0651B00A2A8E2 /* Makefile */,
+				1FE82A181FE0651B00A2A8E2 /* out */,
+				1FE82A191FE0651B00A2A8E2 /* print */,
+				1FE82A1A1FE0651B00A2A8E2 /* qr_pngs */,
+				1FE82A1B1FE0651B00A2A8E2 /* qr_svgs */,
+				1FE82A1C1FE0651B00A2A8E2 /* README.md */,
+				1FE82A1D1FE0651B00A2A8E2 /* samples */,
+				1FE82A1E1FE0651B00A2A8E2 /* src */,
+				1FE82A1F1FE0651B00A2A8E2 /* tmp */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		1FE82A0F1FE0651B00A2A8E2 /* qr-reader */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "$(ACTION)";
+			buildConfigurationList = 1FE82A201FE0651B00A2A8E2 /* Build configuration list for PBXLegacyTarget "qr-reader" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = "/Users/kif/Desktop/dev/cpp/qr-reader";
+			dependencies = (
+			);
+			name = "qr-reader";
+			passBuildSettingsInEnvironment = 1;
+			productName = "qr-reader";
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXProject section */
+		1FE82A0B1FE0651B00A2A8E2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+			};
+			buildConfigurationList = 1FE82A0E1FE0651B00A2A8E2 /* Build configuration list for PBXProject "qr-reader" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 1FE82A0A1FE0651B00A2A8E2;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1FE82A0F1FE0651B00A2A8E2 /* qr-reader */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		1FE82A0C1FE0651B00A2A8E2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		1FE82A0D1FE0651B00A2A8E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+		1FE82A211FE0651B00A2A8E2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUGGING_SYMBOLS = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "qr-reader";
+			};
+			name = Debug;
+		};
+		1FE82A221FE0651B00A2A8E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "qr-reader";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1FE82A0E1FE0651B00A2A8E2 /* Build configuration list for PBXProject "qr-reader" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1FE82A0C1FE0651B00A2A8E2 /* Debug */,
+				1FE82A0D1FE0651B00A2A8E2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1FE82A201FE0651B00A2A8E2 /* Build configuration list for PBXLegacyTarget "qr-reader" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1FE82A211FE0651B00A2A8E2 /* Debug */,
+				1FE82A221FE0651B00A2A8E2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1FE82A0B1FE0651B00A2A8E2 /* Project object */;
+}
