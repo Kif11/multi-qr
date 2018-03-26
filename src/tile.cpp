@@ -1,4 +1,5 @@
 #include <iostream>
+#include <dirent.h>
 
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -56,43 +57,105 @@ void ImageCells::setImage( Mat img ) {
   }
 }
 
+int count_files(const char* directory) {
+  DIR *dir;
+  struct dirent *ent;
+  if ((dir = opendir(directory)) != NULL) {
+    /* print all the files and directories within directory */
+    int count = 0;
+    while ((ent = readdir(dir)) != NULL) {
+      if (!strncmp (ent->d_name, ".", 1)) {
+        continue;        
+      }
+      count++;
+    }
+    closedir (dir);
+    return count;
+  } else {
+    /* could not open directory */
+    perror ("Could not open directory");
+    return -1;
+  }
+}
+
 int main(int argc, char** argv) {
 
   if (argc < 3) {
-    cout << "Usage: tile <folder_with_qrs> <output_image>" << endl;
+    cout << "Usage: tile <folder_with_qrs> <output_folder> [footer_path]" << endl;
     return 0;
   }
 
   string qr_folder = argv[1];
-  string out_image = argv[2];
-  int border_scale = 20;
-  Mat img_bordered;
+  string out_folder = argv[2];
   
-  ImageCells cells(4, 5, 400, 400); 
-  Mat img;
+  string footer_path = "";
+  bool is_footer = false;
+  if (argc == 4) {
+    footer_path = argv[3];
+    is_footer = true;
+  }
 
-  int count = 0;
-  for (int i = 0; i < cells.rows(); i++) {
-    for (int j = 0; j < cells.cols(); j++) {
+  int qrs_on_page = 20;
+  int qr_size = 400;
+  int total_qrs = count_files(qr_folder.c_str());  
+  int num_pages = ceil(total_qrs / (double)qrs_on_page);
+  int border_scale = 40;
 
-      if (count >= 19) {
-        break;
+  int qr_counter = 0;
+
+  Mat footer_img;
+  // make square with text
+  if (is_footer) {
+    footer_img = imread(footer_path); 
+    // imshow("text", footer_img);
+    // waitKey(); 
+  }
+
+  for (int p = 0; p < num_pages; p++) { // for every page
+
+    ImageCells cells(4, 5, qr_size, qr_size);
+
+    Mat img;
+    Mat img_bordered;  
+
+    int per_page_counter = 0;
+    bool done = false;
+    for (int i = 0; i < cells.rows(); i++) {
+      if (done) break;
+      for (int j = 0; j < cells.cols(); j++) {
+
+        if (per_page_counter >= qrs_on_page ) {
+          // break and possibly go to the next page
+          // qrs_on_page QRs per page + one empty square for text
+          break;
+        }
+        string image_path = qr_folder + "/" + to_string(qr_counter) + ".png";   
+
+        img = imread(image_path);
+
+        cells.setCell(j, i, img); // here you see how to use  setCell
+        
+        per_page_counter++;
+        qr_counter++;
+
+        if (img.empty()) {
+          // If image doesn't exist
+          if (is_footer) {
+            cells.setCell(j, i, footer_img);
+          }
+          done = true;
+          break;
+        }
       }
-      string image_path = qr_folder + "/" + to_string(count) + ".png";      
-
-      img = imread(image_path);
-      cells.setCell(j, i, img); // here you see how to use  setCell
-      
-      count++;
     }
+
+    cv::copyMakeBorder(cells.image, img_bordered, border_scale, border_scale, border_scale, border_scale, cv::BORDER_CONSTANT, cv::Scalar(255, 255, 255));
+
+    imwrite(out_folder + "/" + to_string(p) + ".png", img_bordered);
+
   }
 
   // imshow("cells.image", cells.image);
-  // waitKey();
-
-  cv::copyMakeBorder(cells.image, img_bordered, border_scale, border_scale, border_scale, border_scale, cv::BORDER_CONSTANT, cv::Scalar(255, 255, 255));
-
-  imwrite(out_image, img_bordered);
-      
+  // waitKey();    
   return 0;
 }
